@@ -1,5 +1,5 @@
 //https://github.com/crashoz/uuid_v4
-//g++ -Wall -Wextra -pthread -o main -I../src/ ../src/uuid4.c main_optimized.cpp
+//g++ -Wall -Wextra -pthread -o main -I../src/ ../src/uuid4.c main_optimized.cpp -fopenmp
 
 //OPTIMIZATIONS
 // 1. Replace char arrays by structures of char arrays, solving data size and id issues
@@ -15,7 +15,7 @@
 //#include <typeinfo>
 #include <vector>
 #include <algorithm>
-//#include <omp.h>
+#include <omp.h>
 //#include <execution>
 
 //using namespace std;
@@ -81,9 +81,12 @@ class OrdersManager{
       int num_orders = v_orders.size();
       //#pragma omp parallel
       //#pragma omp for
-      for (auto order : v_orders ) {
+      #pragma omp parallel for
+      for (int i=0; i<num_orders; i++) {
+      //for (auto order : v_orders ) {
       //std::for( std::execution::par, v_orders.begin(), v_orders.end(), [](auto&& order) ) {
       //std::for_each(auto order : v_orders ) {
+        auto order = v_orders[i];
         fake_save_on_db(order.id, order.no_order);
         orders_processed++;
 
@@ -123,7 +126,7 @@ int main() {
 
   /*
   for (int i=0; i<len; i++) {
-    uuid4_generate(buf);
+    credit
     array[i] = buf;
     printf("%s\n", array[i]);
   }*/
