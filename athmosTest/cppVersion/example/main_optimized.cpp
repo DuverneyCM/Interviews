@@ -3,7 +3,8 @@
 
 //OPTIMIZATIONS
 // 1. Replace char arrays by structures of char arrays, solving data size and id issues
-// 2. Replace for loop in process_orders() by for_each loop with parallel options
+// 2. Parallelize for loop in process_orders() with OpenMP
+
 
 #include <iostream>
 #include <ctime>
@@ -109,9 +110,7 @@ class OrdersManager{
 //int main(int argc, char* argv[]) {
 int main() {
   //export OMP_NUM_THREADS=5
-  const int len = 10;
-  //char buf[UUID4_LEN];
-  //char * array[len];
+  const int len = 1000;
   uuid4_init();
   
   //omp_set_num_threads(4);
@@ -124,13 +123,5 @@ int main() {
   auto timenow = system_clock::to_time_t(system_clock::now());
   std::cout << ctime(&timenow) << " Tiempo de ejecución: " << (double)delay.count()/1'000'000 << " segundos..." << std::endl;
 
-  /*
-  for (int i=0; i<len; i++) {
-    credit
-    array[i] = buf;
-    printf("%s\n", array[i]);
-  }*/
-  //uuid4_generate(buf);
-  //printf("%s\n", buf);
   return(0);
 }
